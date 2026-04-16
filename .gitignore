@@ -19,5 +19,7 @@ venv/
 *.swo
 .DS_Store
 
+taller_formularios1/
+
 # Claude cache
 .claude/
