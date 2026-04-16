@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ titulo }} - Solicitudes</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 30px 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        .container-form {
+            background-color: white;
+            border-radius: 12px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            padding: 40px;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+            color: #333;
+        }
+
+        .header h1 {
+            font-weight: 700;
+            font-size: 2rem;
+            margin-bottom: 10px;
+            color: #667eea;
+        }
+
+        .header p {
+            color: #666;
+            font-size: 1rem;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-label {
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 8px;
+            display: block;
+        }
+
+        .form-control,
+        .form-select {
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            padding: 12px 15px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .form-control:focus,
+        .form-select:focus {
+            border-color: #667eea;
+            box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.25);
+        }
+
+        .form-text {
+            font-size: 0.85rem;
+            color: #666;
+            margin-top: 5px;
+        }
+
+        .invalid-feedback {
+            font-size: 0.85rem;
+            color: #dc3545;
+            margin-top: 5px;
+            display: block;
+        }
+
+        .form-control.is-invalid,
+        .form-select.is-invalid {
+            border-color: #dc3545;
+        }
+
+        .btn-submit {
+            width: 100%;
+            padding: 12px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            border: none;
+            border-radius: 8px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 10px;
+        }
+
+        .btn-submit:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(102, 126, 234, 0.4);
+            color: white;
+        }
+
+        .btn-submit:active {
+            transform: translateY(0);
+        }
+
+        .required::after {
+            content: " *";
+            color: #dc3545;
+        }
+
+        .alert {
+            border-radius: 8px;
+            border: none;
+            margin-bottom: 20px;
+        }
+
+        .alert-error {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+
+        .alert-success {
+            background-color: #d4edda;
+            color: #155724;
+        }
+
+        .form-section {
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid #f0f0f0;
+        }
+
+        .form-section:last-of-type {
+            border-bottom: none;
+        }
+
+        .section-title {
+            color: #667eea;
+            font-weight: 600;
+            margin-bottom: 15px;
+            font-size: 1.1rem;
+        }
+
+        .row-columns {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        @media (max-width: 768px) {
+            .row-columns {
+                grid-template-columns: 1fr;
+            }
+
+            .container-form {
+                padding: 25px;
+            }
+
+            .header h1 {
+                font-size: 1.5rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container-form">
+        <div class="header">
+            <h1><i class="fas fa-file-alt"></i> {{ titulo }}</h1>
+            <p>Complete el formulario para enviar su solicitud</p>
+        </div>
+
+        {% if messages %}
+        <div class="messages">
+            {% for message in messages %}
+            <div class="alert {% if message.tags %}alert-{{ message.tags }}{% endif %}" role="alert">
+                <i class="fas fa-{% if message.tags == 'error' %}exclamation-circle{% else %}check-circle{% endif %}"></i>
+                {{ message }}
+            </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+
+        <form method="POST" enctype="multipart/form-data" novalidate>
+            {% csrf_token %}
+
+            <!-- Información del Solicitante -->
+            <div class="form-section">
+                <h3 class="section-title"><i class="fas fa-user"></i> Información Personal</h3>
+
+                <div class="row-columns">
+                    <div class="form-group">
+                        <label for="{{ form.nombre_solicitante.id_for_label }}"
+                            class="form-label required">{{ form.nombre_solicitante.label }}</label>
+                        {{ form.nombre_solicitante }}
+                        {% if form.nombre_solicitante.errors %}
+                        <div class="invalid-feedback">
+                            {{ form.nombre_solicitante.errors.0 }}
+                        </div>
+                        {% endif %}
+                        {% if form.nombre_solicitante.help_text %}
+                        <small class="form-text">{{ form.nombre_solicitante.help_text }}</small>
+                        {% endif %}
+                    </div>
+
+                    <div class="form-group">
+                        <label for="{{ form.documento_identidad.id_for_label }}"
+                            class="form-label required">{{ form.documento_identidad.label }}</label>
+                        {{ form.documento_identidad }}
+                        {% if form.documento_identidad.errors %}
+                        <div class="invalid-feedback">
+                            {{ form.documento_identidad.errors.0 }}
+                        </div>
+                        {% endif %}
+                        {% if form.documento_identidad.help_text %}
+                        <small class="form-text">{{ form.documento_identidad.help_text }}</small>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <div class="row-columns">
+                    <div class="form-group">
+                        <label for="{{ form.correo_electronico.id_for_label }}"
+                            class="form-label required">{{ form.correo_electronico.label }}</label>
+                        {{ form.correo_electronico }}
+                        {% if form.correo_electronico.errors %}
+                        <div class="invalid-feedback">
+                            {{ form.correo_electronico.errors.0 }}
+                        </div>
+                        {% endif %}
+                    </div>
+
+                    <div class="form-group">
+                        <label for="{{ form.telefono_contacto.id_for_label }}"
+                            class="form-label required">{{ form.telefono_contacto.label }}</label>
+                        {{ form.telefono_contacto }}
+                        {% if form.telefono_contacto.errors %}
+                        <div class="invalid-feedback">
+                            {{ form.telefono_contacto.errors.0 }}
+                        </div>
+                        {% endif %}
+                        {% if form.telefono_contacto.help_text %}
+                        <small class="form-text">{{ form.telefono_contacto.help_text }}</small>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+
+            <!-- Detalles de la Solicitud -->
+            <div class="form-section">
+                <h3 class="section-title"><i class="fas fa-list"></i> Detalles de la Solicitud</h3>
+
+                <div class="form-group">
+                    <label for="{{ form.tipo_solicitud.id_for_label }}"
+                        class="form-label required">{{ form.tipo_solicitud.label }}</label>
+                    {{ form.tipo_solicitud }}
+                    {% if form.tipo_solicitud.errors %}
+                    <div class="invalid-feedback">
+                        {{ form.tipo_solicitud.errors.0 }}
+                    </div>
+                    {% endif %}
+                </div>
+
+                <div class="form-group">
+                    <label for="{{ form.asunto.id_for_label }}" class="form-label required">{{ form.asunto.label }}</label>
+                    {{ form.asunto }}
+                    {% if form.asunto.errors %}
+                    <div class="invalid-feedback">
+                        {{ form.asunto.errors.0 }}
+                    </div>
+                    {% endif %}
+                </div>
+
+                <div class="form-group">
+                    <label for="{{ form.descripcion_detallada.id_for_label }}"
+                        class="form-label required">{{ form.descripcion_detallada.label }}</label>
+                    {{ form.descripcion_detallada }}
+                    {% if form.descripcion_detallada.errors %}
+                    <div class="invalid-feedback">
+                        {{ form.descripcion_detallada.errors.0 }}
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+
+            <!-- Archivo Adjunto -->
+            <div class="form-section">
+                <h3 class="section-title"><i class="fas fa-paperclip"></i> Documentos</h3>
+
+                <div class="form-group">
+                    <label for="{{ form.archivo_adjunto.id_for_label }}"
+                        class="form-label">{{ form.archivo_adjunto.label }}</label>
+                    {{ form.archivo_adjunto }}
+                    {% if form.archivo_adjunto.errors %}
+                    <div class="invalid-feedback">
+                        {{ form.archivo_adjunto.errors.0 }}
+                    </div>
+                    {% endif %}
+                    {% if form.archivo_adjunto.help_text %}
+                    <small class="form-text">{{ form.archivo_adjunto.help_text }}</small>
+                    {% endif %}
+                </div>
+            </div>
+
+            <button type="submit" class="btn-submit">
+                <i class="fas fa-paper-plane"></i> Enviar Solicitud
+            </button>
+        </form>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>
