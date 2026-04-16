@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registro de asistencia</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/modern-normalize/1.1.0/modern-normalize.min.css" integrity="sha512-L1obWEXdFLwsDq2Du6RAp3WqA6TOKdXo4qDWSG8TpllPI3BYJ2R+usQDJlzM9kyaB9cV4GFvurTHRr4yty8wMA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <style>
+        body { font-family: Arial, sans-serif; max-width: 760px; margin: 32px auto; padding: 0 18px; }
+        .card { border: 1px solid #ccc; border-radius: 12px; padding: 24px; box-shadow: 0 4px 16px rgba(0,0,0,.05); }
+        .form-group { margin-bottom: 16px; }
+        label { display: block; margin-bottom: 6px; font-weight: 600; }
+        input, textarea { width: 100%; padding: 10px 12px; border: 1px solid #bbb; border-radius: 8px; }
+        .form-check { display: flex; align-items: center; gap: 12px; margin-top: 8px; }
+        .button-row { margin-top: 24px; }
+        button { background: #0b5ed7; color: white; border: none; padding: 12px 20px; border-radius: 8px; cursor: pointer; }
+        button:hover { background: #074bb5; }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <h1>Registro de asistencia</h1>
+        <p>Completa el formulario con los datos de la persona que asistió.</p>
+        <form method="post" novalidate>
+            {% csrf_token %}
+            {% for field in form %}
+                <div class="form-group">
+                    {{ field.label_tag }}
+                    {{ field }}
+                    {% if field.help_text %}
+                        <small>{{ field.help_text }}</small>
+                    {% endif %}
+                    {% for error in field.errors %}
+                        <p style="color:#c53030; margin:4px 0 0;">{{ error }}</p>
+                    {% endfor %}
+                </div>
+            {% endfor %}
+            <div class="button-row">
+                <button type="submit">Enviar asistencia</button>
+            </div>
+        </form>
+    </div>
+</body>
+</html>
