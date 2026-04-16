@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Confirmación de asistencia</title>
+    <style>
+        body { font-family: Arial, sans-serif; max-width: 680px; margin: 40px auto; padding: 0 18px; }
+        .message { border: 1px solid #cfe2ff; background: #e7f1ff; color: #084298; border-radius: 14px; padding: 28px; }
+        a { color: #0b5ed7; text-decoration: none; }
+        a:hover { text-decoration: underline; }
+    </style>
+</head>
+<body>
+    <div class="message">
+        <h1>Registro guardado</h1>
+        <p>Los datos de asistencia se registraron correctamente en el sistema.</p>
+        <p><a href="{% url 'asistencia:registro' %}">Registrar otra asistencia</a></p>
+    </div>
+</body>
+</html>
